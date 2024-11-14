@@ -1,0 +1,30 @@
+public class Solution {
+    public int minimizedMaximum(int n, int[] quantities) {
+        int low = 1, high = 0;
+        for (int quantity : quantities) {
+            high = Math.max(high, quantity);
+        }
+        
+        while (low < high) {
+            int mid = (low + high) / 2;
+            if (canDistribute(mid, quantities, n)) {
+                high = mid;
+            } else {
+                low = mid + 1;
+            }
+        }
+        
+        return low;
+    }
+
+    private boolean canDistribute(int x, int[] quantities, int n) {
+        int storesNeeded = 0;
+        for (int quantity : quantities) {
+            storesNeeded += (quantity + x - 1) / x;
+            if (storesNeeded > n) {
+                return false;
+            }
+        }
+        return storesNeeded <= n;
+    }
+}
